@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Khulna Tuition Medium – Square Card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+    </script>
+    <style>
+        /* ─── Reset & Base ─── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f2f5f8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+
+        /* ─── Main Container ─── */
+        .app {
+            max-width: 1100px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* ─── Panel Styles ─── */
+        .panel {
+            background: #ffffff;
+            border-radius: 2rem;
+            padding: 1.8rem 2rem 2rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            border: 1px solid #eaeef2;
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a1f2b;
+            margin-bottom: 1.3rem;
+            letter-spacing: -0.01em;
+        }
+
+        .panel-title i {
+            font-size: 1.3rem;
+            color: #1a1f2b;
+            opacity: 0.5;
+        }
+
+        /* ─── Form ─── */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #3a4b5e;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .form-group label i {
+            font-size: 0.75rem;
+            color: #3a4b5e;
+            width: 1.1rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.6rem 0.9rem;
+            border: 2px solid #dce3e9;
+            border-radius: 1.2rem;
+            font-size: 0.9rem;
+            background: #ffffff;
+            transition: border 0.2s;
+            outline: none;
+            font-family: inherit;
+            color: #1a1f2b;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #1a1f2b;
+        }
+
+        .form-group input::placeholder {
+            color: #aabcce;
+        }
+
+        /* ─── Buttons ─── */
+        .btn-group {
+            display: flex;
+            gap: 0.6rem;
+            margin-top: 1.3rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.6rem;
+            border: none;
+            border-radius: 2rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            letter-spacing: 0.01em;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: #1a1f2b;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #2d3546;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #eef3f8;
+            color: #1a1f2b;
+        }
+
+        .btn-secondary:hover {
+            background: #dce3e9;
+            transform: translateY(-1px);
+        }
+
+        .btn-download {
+            background: #1a1f2b;
+            color: #fff;
+        }
+
+        .btn-download:hover {
+            background: #2d3546;
+            transform: translateY(-1px);
+        }
+
+        /* ─── CARD WRAPPER – SQUARE ─── */
+        #cardCapture {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 1 / 1;
+            margin: 0 auto;
+            border-radius: 1.6rem;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            border: 1px solid #eaeef2;
+            background: #ffffff;
+        }
+
+        /* ─── Tuition Card – Clean, Black & White ─── */
+        .tuition-card {
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            padding: 1.8rem 2rem 1.4rem;
+            border-radius: 1.6rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid #eaeef2;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            background: #1a1f2b;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-text .name {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #1a1f2b;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .brand-text .name span {
+            color: #1a1f2b;
+        }
+
+        .brand-text .tagline {
+            font-size: 0.55rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #7a8a9e;
+            margin-top: 0.05rem;
+        }
+
+        .availability-badge {
+            padding: 0.25rem 1rem;
+            border-radius: 3rem;
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 2px solid #1a1f2b;
+            color: #1a1f2b;
+            background: #ffffff;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        /* ─── Card Body – inline label + value ─── */
+        .card-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.25rem 1.2rem;
+            flex: 1;
+            align-content: center;
+            padding: 0.1rem 0;
+        }
+
+        .card-item {
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
+            padding: 0.15rem 0;
+            flex-wrap: wrap;
+        }
+
+        .card-item .label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #7a8a9e;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .card-item .label i {
+            font-size: 0.7rem;
+            color: #7a8a9e;
+            width: 0.9rem;
+        }
+
+        .card-item .value {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #1a1f2b;
+            word-break: break-word;
+            line-height: 1.3;
+        }
+
+        .card-item .value.amount {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #1a1f2b;
+        }
+
+        .card-item.full {
+            grid-column: 1 / -1;
+        }
+
+        /* ─── Card Footer ─── */
+        .card-footer {
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 2px solid #eaeef2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.6rem;
+            color: #7a8a9e;
+            flex-wrap: wrap;
+            gap: 0.2rem;
+        }
+
+        .card-footer .footer-brand {
+            font-weight: 700;
+            color: #1a1f2b;
+            letter-spacing: 0.03em;
+            font-size: 0.7rem;
+        }
+
+        .card-footer .footer-brand i {
+            margin-right: 0.3rem;
+        }
+
+        /* ─── Empty state ─── */
+        .empty-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            color: #7a8a9e;
+            background: #fafcfe;
+            border-radius: 1.6rem;
+            padding: 2rem;
+            border: 2px dashed #dce3e9;
+        }
+
+        .empty-card i {
+            font-size: 3.2rem;
+            color: #cbdae6;
+            margin-bottom: 0.6rem;
+        }
+
+        .empty-card p {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #3a4b5e;
+        }
+
+        .empty-card .sub {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #7a8a9e;
+            margin-top: 0.2rem;
+        }
+
+        /* ─── Card Actions ─── */
+        .card-actions {
+            display: flex;
+            gap: 0.6rem;
+            margin-top: 0.9rem;
+        }
+
+        .card-actions .btn {
+            flex: 1;
+            padding: 0.6rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 900px) {
+            .app {
+                grid-template-columns: 1fr;
+                gap: 1.8rem;
+                max-width: 560px;
+            }
+
+            #cardCapture {
+                max-width: 100%;
+                aspect-ratio: 1 / 1;
+            }
+
+            .tuition-card {
+                padding: 1.4rem 1.4rem 1.2rem;
+            }
+
+            .brand-text .name {
+                font-size: 1.1rem;
+            }
+            .brand-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 1.1rem;
+            }
+            .card-item .value {
+                font-size: 0.95rem;
+            }
+            .card-item .value.amount {
+                font-size: 1.2rem;
+            }
+            .availability-badge {
+                font-size: 0.65rem;
+                padding: 0.2rem 0.8rem;
+            }
+            .card-item .label {
+                font-size: 0.65rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0.6rem;
+            }
+            .panel {
+                padding: 0.9rem 0.8rem 1rem;
+                border-radius: 1.4rem;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 0.4rem;
+            }
+            .form-group.full {
+                grid-column: 1;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            .card-body {
+                grid-template-columns: 1fr;
+                gap: 0.2rem;
+            }
+            .card-item.full {
+                grid-column: 1;
+            }
+            .tuition-card {
+                padding: 1rem 0.9rem 0.8rem;
+            }
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.3rem;
+                margin-bottom: 0.4rem;
+            }
+            .brand-text .name {
+                font-size: 0.95rem;
+            }
+            .brand-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 0.9rem;
+            }
+            .card-item .value {
+                font-size: 0.85rem;
+            }
+            .card-item .value.amount {
+                font-size: 1.05rem;
+            }
+            .availability-badge {
+                font-size: 0.55rem;
+                padding: 0.15rem 0.6rem;
+            }
+            .panel-title {
+                font-size: 0.95rem;
+                margin-bottom: 0.6rem;
+            }
+            .card-actions {
+                flex-direction: column;
+            }
+            .card-footer {
+                font-size: 0.5rem;
+            }
+            .card-footer .footer-brand {
+                font-size: 0.6rem;
+            }
+            #cardCapture {
+                border-radius: 1.2rem;
+            }
+            .card-item .label {
+                font-size: 0.6rem;
+            }
+        }
+
+        @media print {
+            body {
+                background: #fff;
+                padding: 0.3in;
+            }
+            .app {
+                display: block;
+            }
+            .panel:first-child {
+                display: none;
+            }
+            .panel {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                padding: 0.5rem;
+            }
+            .card-actions {
+                display: none;
+            }
+            .tuition-card {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+            #cardCapture {
+                max-width: 100%;
+                aspect-ratio: 1/1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app">
+
+        <!-- ─── FORM PANEL ─── -->
+        <div class="panel">
+            <div class="panel-title">
+                <i class="fas fa-pen-fancy"></i>
+                <span>Enter Details</span>
+                <span style="font-size:0.6rem;font-weight:400;color:#7a8a9e;margin-left:auto;">Fill &amp; Generate</span>
+            </div>
+
+            <form id="tuitionForm" autocomplete="off">
+                <div class="form-grid">
+
+                    <!-- Class first -->
+                    <div class="form-group full">
+                        <label><i class="fas fa-layer-group"></i> Class / Grade</label>
+                        <input type="text" id="classGrade" placeholder="e.g. Class 10" required />
+                    </div>
+
+                    <!-- Subjects second -->
+                    <div class="form-group full">
+                        <label><i class="fas fa-book-open"></i> Subjects</label>
+                        <input type="text" id="subjects" placeholder="Math, English, Science" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-week"></i> Days / Week</label>
+                        <input type="text" id="daysPerWeek" placeholder="e.g. 5 days" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-dollar-sign"></i> Monthly Fee</label>
+                        <input type="number" id="monthlyFee" placeholder="0.00" step="0.01" min="0" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-alt"></i> Start Date</label>
+                        <input type="date" id="startDate" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-map-marker-alt"></i> Location</label>
+                        <input type="text" id="location" placeholder="Address / Area" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-user-tie"></i> Teacher Required</label>
+                        <input type="text" id="teacherRequired" placeholder="e.g. Experienced in Math" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-phone"></i> Contact Number</label>
+                        <input type="text" id="contactNumber" placeholder="+880 1XXX-XXXXXX" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-tag"></i> Label</label>
+                        <select id="availability">
+                            <option value="available">✅ Available</option>
+                            <option value="hot">🔥 Hot</option>
+                            <option value="urgent">⚡ Urgent</option>
+                            <option value="default">—</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="display:flex;flex-direction:row;gap:0.5rem;align-items:flex-end;justify-content:flex-end;">
+                        <button type="submit" class="btn btn-primary" style="flex:0 0 auto;padding:0.55rem 1.8rem;">
+                            <i class="fas fa-credit-card"></i> Generate
+                        </button>
+                        <button type="reset" class="btn btn-secondary" style="flex:0 0 auto;padding:0.55rem 1.4rem;">
+                            <i class="fas fa-undo-alt"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <!-- ─── CARD PREVIEW PANEL ─── -->
+        <div class="panel card-wrapper">
+            <div class="panel-title">
+                <i class="fas fa-id-card"></i>
+                <span>Tuition Card</span>
+                <span style="margin-left:auto;font-size:0.65rem;font-weight:400;color:#7a8a9e;cursor:pointer;" onclick="window.print()">
+                    <i class="fas fa-print"></i> Print
+                </span>
+            </div>
+
+            <!-- Square card capture container -->
+            <div id="cardCapture">
+                <!-- Empty state -->
+                <div class="tuition-card empty-card" id="emptyState">
+                    <i class="fas fa-file-invoice"></i>
+                    <p>No card yet</p>
+                    <span class="sub">Fill the form and click "Generate"</span>
+                </div>
+
+                <!-- Dynamic square card – clean, black & white -->
+                <div class="tuition-card" id="tuitionCard" style="display:none;">
+                    <div class="card-header">
+                        <div class="brand-section">
+                            <div class="brand-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="brand-text">
+                                <span class="name"><span>Khulna</span> Tuition Medium</span>
+                                <span class="tagline"><i class="fas fa-star"></i> Trusted Education</span>
+                            </div>
+                        </div>
+                        <span class="availability-badge" id="availabilityBadge">Available</span>
+                    </div>
+
+                    <div class="card-body" id="cardBody">
+                        <!-- Class first -->
+                        <div class="card-item full">
+                            <span class="label"><i class="fas fa-layer-group"></i> Class</span>
+                            <span class="value" id="displayClass">—</span>
+                        </div>
+                        <!-- Subjects second -->
+                        <div class="card-item full">
+                            <span class="label"><i class="fas fa-book-open"></i> Subjects</span>
+                            <span class="value" id="displaySubjects">—</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="label"><i class="fas fa-calendar-week"></i> Days</span>
+                            <span class="value" id="displayDays">—</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="label"><i class="fas fa-dollar-sign"></i> Fee</span>
+                            <span class="value amount" id="displayFee">$0.00</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="label"><i class="fas fa-calendar-alt"></i> Start</span>
+                            <span class="value" id="displayStart">—</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="label"><i class="fas fa-map-marker-alt"></i> Location</span>
+                            <span class="value" id="displayLocation">—</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="label"><i class="fas fa-user-tie"></i> Teacher</span>
+                            <span class="value" id="displayTeacher">—</span>
+                        </div>
+                        <div class="card-item">
+                            <span class="label"><i class="fas fa-phone"></i> Contact</span>
+                            <span class="value" id="displayContact">—</span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <span id="cardFooterDate">Issued: —</span>
+                        <span class="footer-brand">
+                            <i class="fas fa-graduation-cap"></i> Khulna Tuition Medium
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <button class="btn btn-download" id="downloadCardBtn" style="display:none;">
+                    <i class="fas fa-download"></i> Download Square Image
+                </button>
+                <button class="btn btn-secondary" id="resetCardBtn" style="display:none;">
+                    <i class="fas fa-trash-alt"></i> Clear
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ─── DOM refs ───
+            const form = document.getElementById('tuitionForm');
+            const emptyState = document.getElementById('emptyState');
+            const tuitionCard = document.getElementById('tuitionCard');
+            const cardCapture = document.getElementById('cardCapture');
+
+            const displaySubjects = document.getElementById('displaySubjects');
+            const displayClass = document.getElementById('displayClass');
+            const displayDays = document.getElementById('displayDays');
+            const displayFee = document.getElementById('displayFee');
+            const displayStart = document.getElementById('displayStart');
+            const displayLocation = document.getElementById('displayLocation');
+            const displayTeacher = document.getElementById('displayTeacher');
+            const displayContact = document.getElementById('displayContact');
+            const availabilityBadge = document.getElementById('availabilityBadge');
+            const cardFooterDate = document.getElementById('cardFooterDate');
+
+            const downloadBtn = document.getElementById('downloadCardBtn');
+            const resetCardBtn = document.getElementById('resetCardBtn');
+
+            // ─── Helpers ───
+            function formatDate(dateStr) {
+                if (!dateStr) return '—';
+                const d = new Date(dateStr + 'T00:00:00');
+                if (isNaN(d.getTime())) return dateStr;
+                return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+            }
+
+            function formatCurrency(amount) {
+                if (amount === undefined || amount === null || amount === '') return '$0.00';
+                const num = parseFloat(amount);
+                if (isNaN(num)) return '$0.00';
+                return '$' + num.toFixed(2);
+            }
+
+            function getAvailabilityLabel(value) {
+                switch (value) {
+                    case 'hot': return '🔥 Hot';
+                    case 'urgent': return '⚡ Urgent';
+                    case 'available': return '✅ Available';
+                    default: return '—';
+                }
+            }
+
+            // ─── Render Card ───
+            function renderCard(data) {
+                emptyState.style.display = 'none';
+                tuitionCard.style.display = 'flex';
+                downloadBtn.style.display = 'inline-flex';
+                resetCardBtn.style.display = 'inline-flex';
+
+                // Class first, Subjects second
+                displayClass.textContent = data.classGrade || '—';
+                displaySubjects.textContent = data.subjects || '—';
+                displayDays.textContent = data.daysPerWeek || '—';
+                displayFee.textContent = formatCurrency(data.monthlyFee);
+                displayStart.textContent = formatDate(data.startDate);
+                displayLocation.textContent = data.location || '—';
+                displayTeacher.textContent = data.teacherRequired || '—';
+                displayContact.textContent = data.contactNumber || '—';
+
+                const avail = data.availability || 'available';
+                availabilityBadge.textContent = getAvailabilityLabel(avail);
+                availabilityBadge.className = 'availability-badge';
+
+                const now = new Date();
+                cardFooterDate.textContent = 'Issued: ' + now.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                }) + ' ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            }
+
+            function resetCard() {
+                tuitionCard.style.display = 'none';
+                emptyState.style.display = 'flex';
+                downloadBtn.style.display = 'none';
+                resetCardBtn.style.display = 'none';
+            }
+
+            // ─── Form Submit ───
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const classGrade = document.getElementById('classGrade').value.trim();
+                const subjects = document.getElementById('subjects').value.trim();
+                const daysPerWeek = document.getElementById('daysPerWeek').value.trim();
+                const monthlyFee = document.getElementById('monthlyFee').value;
+                const startDate = document.getElementById('startDate').value;
+                const location = document.getElementById('location').value.trim();
+                const teacherRequired = document.getElementById('teacherRequired').value.trim();
+                const contactNumber = document.getElementById('contactNumber').value.trim();
+                const availability = document.getElementById('availability').value;
+
+                if (!classGrade || !subjects || !daysPerWeek || !monthlyFee || !startDate || !location || !teacherRequired ||
+                    !contactNumber) {
+                    alert('Please fill in all fields.');
+                    return;
+                }
+
+                if (parseFloat(monthlyFee) < 0) {
+                    alert('Monthly fee cannot be negative.');
+                    return;
+                }
+
+                const data = {
+                    classGrade,
+                    subjects,
+                    daysPerWeek,
+                    monthlyFee: parseFloat(monthlyFee) || 0,
+                    startDate,
+                    location,
+                    teacherRequired,
+                    contactNumber,
+                    availability
+                };
+
+                renderCard(data);
+            });
+
+            // ─── Reset Button (clear form & card) ───
+            document.querySelector('button[type="reset"]').addEventListener('click', function(e) {
+                setTimeout(() => { resetCard(); }, 10);
+            });
+
+            resetCardBtn.addEventListener('click', function() {
+                resetCard();
+                form.reset();
+                const startInput = document.getElementById('startDate');
+                const today = new Date();
+                const future = new Date(today);
+                future.setDate(today.getDate() + 7);
+                const y = future.getFullYear();
+                const m = String(future.getMonth() + 1).padStart(2, '0');
+                const d = String(future.getDate()).padStart(2, '0');
+                startInput.value = y + '-' + m + '-' + d;
+                document.getElementById('availability').value = 'available';
+            });
+
+            // ─── Download Square Image ───
+            downloadBtn.addEventListener('click', function() {
+                if (tuitionCard.style.display === 'none') {
+                    alert('Please generate a card first.');
+                    return;
+                }
+
+                html2canvas(cardCapture, {
+                    scale: 2.5,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    borderRadius: '1.6rem',
+                    allowTaint: false,
+                    width: cardCapture.scrollWidth,
+                    height: cardCapture.scrollHeight,
+                }).then((canvas) => {
+                    const link = document.createElement('a');
+                    link.download = 'Khulna_Tuition_Square.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                }).catch((err) => {
+                    console.error('Download error:', err);
+                    alert('Could not download image. Please try again.');
+                });
+            });
+
+            // ─── Set default start date to today + 7 days ───
+            (function setDefaultDate() {
+                const startInput = document.getElementById('startDate');
+                const today = new Date();
+                const future = new Date(today);
+                future.setDate(today.getDate() + 7);
+                const y = future.getFullYear();
+                const m = String(future.getMonth() + 1).padStart(2, '0');
+                const d = String(future.getDate()).padStart(2, '0');
+                startInput.value = y + '-' + m + '-' + d;
+            })();
+
+            // ─── Seed with sample data ───
+            (function seedDemo() {
+                const sample = {
+                    classGrade: 'Class 10',
+                    subjects: 'Math, English, Science',
+                    daysPerWeek: '5 days',
+                    monthlyFee: 450,
+                    startDate: document.getElementById('startDate').value,
+                    location: 'Khulna, Bangladesh',
+                    teacherRequired: 'Experienced in Math & Science',
+                    contactNumber: '+880 1XXX-XXXXXX',
+                    availability: 'available'
+                };
+
+                document.getElementById('classGrade').value = sample.classGrade;
+                document.getElementById('subjects').value = sample.subjects;
+                document.getElementById('daysPerWeek').value = sample.daysPerWeek;
+                document.getElementById('monthlyFee').value = sample.monthlyFee;
+                document.getElementById('location').value = sample.location;
+                document.getElementById('teacherRequired').value = sample.teacherRequired;
+                document.getElementById('contactNumber').value = sample.contactNumber;
+                document.getElementById('availability').value = sample.availability;
+
+                setTimeout(() => {
+                    renderCard(sample);
+                }, 150);
+            })();
+
+        })();
+    </script>
+
+</body>
+</html>
